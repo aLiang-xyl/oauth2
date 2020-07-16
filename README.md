@@ -1,6 +1,8 @@
 # auth2认证服务
 基于springboot的oauth2 jwt，使用私钥进行加密，token信息保存在redis中。用户密码加密方式SCryptPasswordEncoder。
 
+<a href="https://blog.csdn.net/qq_20280007/article/details/107388319" target="_blank">见博客</a>
+
 ## 公钥私钥生成方式:
 
 **私钥**
