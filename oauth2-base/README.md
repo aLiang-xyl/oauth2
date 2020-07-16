@@ -74,10 +74,6 @@ http://localhost:8080/oauth/token?client_id=wx-oauth-client-id&client_secret=wx-
 * 普通用户按照原有方式处理
 * 小程序用户根据js_code调用微信api查询是否存在openid，如果获取到openid则根据openid生成用户（如果用户不存在）
 
-## 用户表结构
-
-表结构可参见SysUser类
-
 ## 认证流程
 
 <a href="https://tools.ietf.org/html/rfc6749#section-4.1" target="_blank">OAuth2官方文档</a>

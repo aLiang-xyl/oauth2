@@ -1,0 +1,63 @@
+server: 
+  port: 8080
+spring:
+  profiles:
+    active: dev
+  application:
+    name: auth2-server
+#资源校验公钥  
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:certs/public.pub     
+mybatis-plus:
+  mapper-locations: classpath*:com/framework/**/mapper/xml/**Mapper.xml
+  typeAliasesPackage: com.framework.*.entity
+  configuration:
+    cache-enabled: false
+mybatis:
+  scan: 
+    basepackage: 'com.framework.auth.mapper'    
+swagger2:
+  basePackage: com.framework
+  enable: true
+logging:
+  config: classpath:log4j2.xml
+  level: 
+    io.swagger.models.parameters.AbstractSerializableParameter: error
+
+oauth:
+  #token有效期24小时
+  access-token-validity-seconds: 86400
+  #refresh token有效期48小时
+  refresh-token-validity-seconds: 172800
+  client:
+    #普通用户
+    common: 
+      clinet-id: oauth-client-id
+      client-secret: oauth-client-secret
+    #微信小程序用户
+    weixin:
+      clinet-id: wx-oauth-client-id
+      client-secret: wx-oauth-client-secret
+  #微信登陆配置    
+  weixin:
+    small-program: 
+      #小程序登陆接口
+      auth-url: https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&appid=${oauth.weixin.small-program.appid}&secret=${oauth.weixin.small-program.secret}&js_code=
+      #配置放在了nacos配置中心
+      appid: xxxx
+      secret: xxxx
+  #下面的请求路径会跳过权限校验 
+  path-matchers:
+    permit-all: '/test**, /test/**, /free/**, /static/**, /register**, /health, /info, /hystrix.stream/**, /trace, /features, /dump, /webjars/**, /swagger-ui.html, /swagger-resources/**, /**/v2/api-docs, /v2/api-docs, /favicon.ico, /actuator/**'
+  jks:
+    #私钥配置
+    path: certs/auth-jwt.jks
+    #私钥密码
+    password: 123456
+    #alias
+    key-pair-alias: auth-jwt                
+
+

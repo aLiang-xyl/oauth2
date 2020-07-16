@@ -1,6 +1,26 @@
 # auth2认证服务
 基于springboot的oauth2 jwt，使用私钥进行加密，token信息保存在redis中。用户密码加密方式SCryptPasswordEncoder。
 
+## 注册中心的选择
+可以选择使用nacos或者consul,根据环境不同选择对应的注册中心配置
+
+```xml
+<!-- 如果使用consul则使用该依赖 -->
+<dependency>
+	<groupId>com.framework</groupId>
+	<artifactId>dependencies-consul-client</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<type>pom</type>
+</dependency>
+<!-- 如果使用nacos则使用该依赖 -->
+<dependency>
+	<groupId>com.framework</groupId>
+	<artifactId>dependencies-nacos-client</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<type>pom</type>
+</dependency>
+```
+
 ## 公钥私钥生成方式:
 
 **私钥**
@@ -15,7 +35,7 @@ keytool -genkey -alias auth-jwt -keypass 123456 -keyalg RSA -storetype PKCS12 -k
 
 基于私钥生成公钥，用于auth2资源服务进行验签
 
-使用下面的命令，将公钥信息保存在任意文本中，例如：public.pub  
+将公钥信息保存在任意文本中，例如：public.pub  
 
 ```sh
 keytool -list -rfc --keystore auth-jwt.jks | openssl x509 -inform pem -pubkey
@@ -65,18 +85,6 @@ oauth:
 http://localhost:8080/oauth/token?client_id=wx-oauth-client-id&client_secret=wx-oauth-client-secret&grant_type=password&username=12345678
 ```
 
-## 未实现的功能
-* 代码中未实现数据库查询功能，需要自己实现
-* get请求调用微信api未实现，需要自己实现
-
-## WebSecurityConfig配置中重写了AuthenticationManager相关
-
-* 普通用户按照原有方式处理
-* 小程序用户根据js_code调用微信api查询是否存在openid，如果获取到openid则根据openid生成用户（如果用户不存在）
-
-## 用户表结构
-
-表结构可参见SysUser类
 
 ## 认证流程
 
@@ -138,4 +146,4 @@ http://localhost:8080/oauth/token?client_id=wx-oauth-client-id&client_secret=wx-
         （可选）新的刷新令牌）。
 ```
       
-            
+**注：本框架中 Resource Server 集成在网关中**               
